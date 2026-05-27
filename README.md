@@ -1,22 +1,22 @@
-# 🚛 DriverLedger — Planificador de Viajes FMCSA ELD
+# 🚛 DriverLedger — FMCSA ELD Trip Planner
 
-DriverLedger es una aplicación full-stack para planificar viajes de camiones cumpliendo con las regulaciones HOS (Hours of Service) de la FMCSA. Genera planes de viaje detallados con mapas de ruta, resúmenes de paradas y registros diarios (log sheets) en formato PDF.
+DriverLedger is a full-stack trip planning application for truck drivers that complies with FMCSA Hours of Service (HOS) regulations. It generates detailed trip plans with route maps, stop summaries, and daily log sheets in PDF format.
 
-## Stack Tecnológico
+## Tech Stack
 
-| Capa       | Tecnología                                                                 |
+| Layer      | Technology                                                                |
 |------------|---------------------------------------------------------------------------|
 | Backend    | Python + Django REST Framework + Gunicorn                                 |
 | Frontend   | React 18 + TypeScript + Vite + Tailwind CSS + Leaflet                     |
-| APIs externas | Nominatim (geocoding), OSRM (enrutamiento)                            |
+| External APIs | Nominatim (geocoding), OSRM (routing)                                 |
 
-## Requisitos
+## Requirements
 
-- **Node.js** 18+ y npm
+- **Node.js** 18+ and npm
 - **Python** 3.10+
-- Conexión a Internet (para geocoding y enrutamiento por API)
+- Internet connection (for geocoding and routing APIs)
 
-## Instalación
+## Setup
 
 ### Backend
 
@@ -43,42 +43,42 @@ npm install
 npm run dev
 ```
 
-El frontend se abrirá en `http://localhost:5173` y el backend correrá en `http://localhost:8000`.
+The frontend opens at `http://localhost:5173` and the backend runs on `http://localhost:8000`.
 
-## Uso
+## Usage
 
-1. Abre la aplicación en el navegador.
-2. Ingresa las ubicaciones de origen, pickup y destino (autocompletado con Nominatim).
-3. Indica las horas de ciclo usadas (0–70 hrs).
-4. Haz clic en **Plan Trip**.
-5. El plan incluye:
-   - **Mapa de ruta** con paradas y leyenda de colores.
-   - **Timeline de paradas** (pickup, dropoff, combustible, descanso, pausas).
-   - **Tarjetas de métricas** (distancia total, horas de conducción, días de viaje).
-   - **Log sheets diarios** conformes a la FMCSA con gráfico de barras de 24h, totales por status y tabla de recap de 70h/8 días.
-   - **Descarga de PDFs** por día o de todos los días juntos.
-6. Si se excede el límite de 70 horas de ciclo, se muestra una violación.
+1. Open the app in your browser.
+2. Enter the origin, pickup, and dropoff locations (Nominatim autocomplete).
+3. Set your current cycle hours used (0–70 hrs).
+4. Click **Plan Trip**.
+5. The plan includes:
+   - **Route map** with stops and color-coded legend.
+   - **Stop timeline** (pickup, dropoff, fuel, rest, break).
+   - **Metric cards** (total distance, driving hours, trip days).
+   - **Daily log sheets** compliant with FMCSA standards, featuring a 24h bar chart, per-status totals, and a 70h/8-day recap table.
+   - **PDF downloads** — single day or all days at once.
+6. If the 70-hour cycle limit is exceeded, a violation is reported.
 
-## Regulaciones HOS Implementadas
+## HOS Regulations Implemented
 
-- **11 horas** máximas de conducción por día
-- **14 horas** de ventana de servicio (duty window)
-- **30 minutos** de pausa después de 8 horas de conducción
-- **10 horas** de descanso fuera de servicio (off-duty)
-- **70 horas / 8 días** de límite de ciclo (con acumulación absoluta y reporte de violaciones)
-- Pre-trip y post-trip inspection incluidos
+- **11-hour** daily driving limit
+- **14-hour** service window (duty window)
+- **30-minute** break after 8 hours of driving
+- **10-hour** off-duty rest period
+- **70-hour / 8-day** cycle limit (absolute accumulation with violation reporting)
+- Pre-trip and post-trip inspections included
 
-## Reglas de Paradas
+## Stop Types
 
-| Tipo       | Color  | Descripción                            |
-|------------|--------|----------------------------------------|
-| Pickup     | Azul   | Carga de mercancía                     |
-| Dropoff    | Verde  | Descarga de mercancía                  |
-| Combustible| Naranja| Parada de combustible                  |
-| Descanso   | Púrpura| Descanso de 10 horas (off-duty)        |
-| Pausa      | Teal   | Pausa de 30 minutos                    |
+| Type       | Color    | Description                       |
+|------------|----------|-----------------------------------|
+| Pickup     | Blue     | Load cargo                        |
+| Dropoff    | Green    | Unload cargo                      |
+| Fuel       | Orange   | Fuel stop                         |
+| Rest       | Purple   | 10-hour off-duty rest             |
+| Break      | Teal     | 30-minute break                   |
 
-## Despliegue
+## Deployment
 
 ### Backend (Render / Railway / Fly.io)
 
@@ -95,40 +95,40 @@ cd frontend
 npm run build
 ```
 
-El directorio `dist/` contiene los archivos estáticos listos para desplegar.
+The `dist/` directory contains the static files ready for deployment.
 
-## Variables de Entorno
+## Environment Variables
 
-| Variable            | Defecto                                  | Descripción                            |
-|---------------------|------------------------------------------|----------------------------------------|
-| `DJANGO_SECRET_KEY` | `django-insecure-eld-trip-planner-dev-…` | Clave secreta de Django (cambiar en prod) |
-| `DEBUG`             | `True`                                   | Modo debug de Django                   |
+| Variable            | Default                                  | Description                         |
+|---------------------|------------------------------------------|-------------------------------------|
+| `DJANGO_SECRET_KEY` | `django-insecure-eld-trip-planner-dev-…` | Django secret key (change in prod)  |
+| `DEBUG`             | `True`                                   | Django debug mode                   |
 
-## Estructura del Proyecto
+## Project Structure
 
 ```
 DriveLedger/
 ├── backend/
 │   ├── api/
-│   │   ├── hos_calculator.py   # Motor HOS (state machine)
-│   │   ├── views.py            # Endpoint REST /plan-trip/
-│   │   ├── urls.py             # Rutas del API
-│   │   └── log_generator.py    # Generación de logs imprimibles
-│   ├── eldplanner/             # Configuración de Django
+│   │   ├── hos_calculator.py   # HOS engine (state machine)
+│   │   ├── views.py            # /plan-trip/ REST endpoint
+│   │   ├── urls.py             # API routes
+│   │   └── log_generator.py    # Printable log sheet generation
+│   ├── eldplanner/             # Django configuration
 │   ├── manage.py
 │   └── requirements.txt
 ├── frontend/
 │   ├── src/
 │   │   ├── components/
-│   │   │   ├── TripForm.tsx     # Formulario de entrada
-│   │   │   ├── RouteMap.tsx     # Mapa Leaflet con ruta y paradas
-│   │   │   ├── StopsSummary.tsx # Timeline de paradas
-│   │   │   └── LogSheet.tsx     # Log sheet diario FMCSA
+│   │   │   ├── TripForm.tsx     # Input form
+│   │   │   ├── RouteMap.tsx     # Leaflet map with route & stops
+│   │   │   ├── StopsSummary.tsx # Stop timeline
+│   │   │   └── LogSheet.tsx     # FMCSA daily log sheet
 │   │   ├── hooks/
-│   │   │   └── useTripPlan.ts   # Hook de llamada al API
+│   │   │   └── useTripPlan.ts   # API call hook
 │   │   ├── types/
-│   │   │   └── trip.ts          # Tipos TypeScript
-│   │   └── App.tsx              # Orquestador principal
+│   │   │   └── trip.ts          # TypeScript types
+│   │   └── App.tsx              # Main orchestrator
 │   ├── index.html
 │   ├── package.json
 │   ├── tailwind.config.js
@@ -140,7 +140,7 @@ DriveLedger/
 
 ### `POST /api/plan-trip/`
 
-**Body:**
+**Request:**
 ```json
 {
   "current_location": "Los Angeles, CA",
@@ -167,6 +167,6 @@ DriveLedger/
 }
 ```
 
-## Licencia
+## License
 
-Uso interno. No redistribuir sin autorización.
+Internal use. Do not redistribute without authorization.
