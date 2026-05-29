@@ -99,15 +99,30 @@ The `dist/` directory contains the static files ready for deployment.
 
 ## Environment Variables
 
-| Variable            | Default                                  | Description                         |
-|---------------------|------------------------------------------|-------------------------------------|
-| `DJANGO_SECRET_KEY` | `django-insecure-eld-trip-planner-dev-…` | Django secret key (change in prod)  |
-| `DEBUG`             | `True`                                   | Django debug mode                   |
+Copy the `.env.example` file to `.env` and adjust values:
+
+```bash
+cp .env.example .env   # macOS/Linux
+copy .env.example .env # Windows
+```
+
+| Variable                | Default                                                | Description                         |
+|-------------------------|--------------------------------------------------------|-------------------------------------|
+| `DJANGO_SECRET_KEY`     | `django-insecure-eld-trip-planner-dev-…`               | Django secret key (change in prod)  |
+| `DEBUG`                 | `True`                                                 | Django debug mode                   |
+| `DJANGO_ALLOWED_HOSTS`  | `localhost,127.0.0.1`                                  | Allowed hostnames                   |
+| `DJANGO_SETTINGS_MODULE`| `eldplanner.settings`                                  | Django settings module path         |
+| `VITE_API_URL`          | `/api`                                                 | Backend API base URL (frontend)     |
+
+> **Note:** The `.env` file is already in `.gitignore` and will not be committed. The backend automatically loads variables from the root `.env` file when it starts.
 
 ## Project Structure
 
 ```
 DriveLedger/
+├── .env                     # Environment variables (gitignored)
+├── .env.example             # Environment template
+├── .gitignore
 ├── backend/
 │   ├── api/
 │   │   ├── hos_calculator.py   # HOS engine (state machine)

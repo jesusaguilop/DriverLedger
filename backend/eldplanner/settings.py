@@ -11,11 +11,12 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
 from pathlib import Path
+from os import getenv
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-SECRET_KEY = 'django-insecure-eld-trip-planner-dev-key-change-in-production'
-DEBUG = True
-ALLOWED_HOSTS = ['*']
+SECRET_KEY = getenv('DJANGO_SECRET_KEY', 'django-insecure-eld-trip-planner-dev-key-change-in-production')
+DEBUG = getenv('DEBUG', 'True') == 'True'
+ALLOWED_HOSTS = getenv('DJANGO_ALLOWED_HOSTS', '*').split(',')
 
 INSTALLED_APPS = [
     'django.contrib.contenttypes',
